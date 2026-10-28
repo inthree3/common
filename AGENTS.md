@@ -4,7 +4,7 @@ Read this file, your area's AGENTS.md, contracts/README.md, and the shared hando
 
 ## Setup on a shared VM
 
-These steps reproduce our initial worktree setup in a new project. Use an existing Git repository at `/srv/project` with an initial commit on `main`; give each collaborator SSH access and shared write access to the project. Run setup once, before agents start editing:
+Each user is authenticated by their public key to sign into the VM. Use an existing Git repository at `/srv/project` with an initial commit on `main`. Run setup once, before agents start editing:
 
 ```sh
 cd /srv/project
@@ -19,7 +19,7 @@ Each agent starts in its assigned worktree, edits its owned directory, and commi
 
 The designated integrator reviews and merges committed owner branches into `main` from `/srv/project`, one at a time, then runs integration checks. Owners merge committed `main` updates into their own branches as needed. Agree on contract changes before integration.
 
-We later moved everyone into `/srv/project` on `main`. To make that transition, pause edits, inspect every worktree for uncommitted work, commit and integrate the intended changes, and verify the combined result before moving sessions. Preserve old worktrees; do not remove or reset unfinished work. After the switch, use only the shared checkout and coordinate overlapping files through the inbox.
+We later moved everyone into `/srv/project` on `main`. To make that transition, pause edits, inspect every worktree for uncommitted work, commit and integrate the intended changes, and verify the combined result before moving sessions. 
 
 ## Working checkout
 
