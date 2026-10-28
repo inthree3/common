@@ -1,73 +1,31 @@
 # Common
 
-A shared workspace for coding agents.
+How three collaborators used coding agents to build Stella, a macOS assistant, during Cal Hacks 2026.
 
-Stella, Lily, and Alex connect over SSH to one VM and work in the same Git checkout. Saved edits are immediately visible to everyone; Git records the agreed checkpoints.
+This repository documents the collaboration setup. It does not contain the Stella application.
 
-## Layout
+## How we worked
 
-```text
-/srv/project/
-├── stella/              # App and voice API
-├── lily/                # Analysis and suggestions
-├── alex/                # Local execution system
-├── AGENTS.md            # Collaboration rules
-├── contracts/           # Interface agreements
-├── handoffs/messages/   # Requests and progress updates
-└── tools/               # Shared build, test, and deployment commands
-```
+We connected to a shared VM over SSH and divided the work by responsibility:
 
-This README describes the starting layout. Add directories and tools as they become necessary.
+| Area | Responsibility |
+| --- | --- |
+| Stella (`stella/`) | macOS app, voice, capture, and uploads |
+| Lily (`lily/`) | Analysis, clarification, proposals, and dashboard |
+| Alex (`alex/`) | Local execution, verification, and result explanations |
 
-## Workflow
+We initially used separate worktrees. On October 25, 2026, we moved development to one checkout at `/srv/project` on `main`. From then on, saved edits were immediately visible to the other agents. We kept the old worktrees as history.
 
-1. Read `AGENTS.md` and relevant contracts before starting.
-2. Announce the task and files you intend to edit in `handoffs/messages/`.
-3. Agree on an interface in `contracts/` before changing behavior another agent uses.
-4. Make the change, run relevant checks, and leave a short handoff.
-5. Alex coordinates Git commits and shared builds.
+## Coordination
 
-## Collaboration rules
+- `AGENTS.md` set the working rules and responsibilities.
+- `contracts/` described interfaces between the three areas. Affected owners agreed on changes before integration.
+- `handoffs/messages/` held requests, acknowledgments, blockers, and completion evidence in separate Markdown files. A request was not an acknowledgment, and an acknowledgment was not proof of completion.
+- Agents checked Git status, coordinated overlapping edits, ran relevant checks, and committed only explicit files belonging to their change. The final rules did not reserve commits for Alex.
+- We preserved one another's changes and avoided branch switches, resets, stashes, and cleanup in the shared checkout. These were agreed rules, not enforced file locks.
 
-Copy these rules into `AGENTS.md` when setting up the workspace:
+The handoff inbox was local and ignored by Git. Accepted decisions belonged in contracts or project documentation. Credentials, recordings, and private runtime data stayed out of Git and handoffs.
 
-- Work in your own directory by default. Agree with the owner before editing elsewhere.
-- Only one agent edits a file at a time. Wait for acknowledgement when ownership overlaps.
-- Alex alone stages, commits, and pushes to `main`. Stage explicit paths and review the staged diff.
-- Everyone shares the current branch and staging area. Never switch branches, reset, stash, or clean while others are working.
-- Pause edits to affected files during a shared build or test run. Record what was checked and the result.
-- Preserve other agents' work. Ask before overwriting or deleting it.
-- Keep credentials out of code, contracts, and messages.
-- Deploy only when explicitly requested.
+## Original instructions
 
-These are coordination rules, not enforced file locks.
-
-## Handoffs
-
-Use one Markdown file per message, named `YYYYMMDD-HHMMSS-agent-topic.md`:
-
-```markdown
-From: stella
-To: alex
-Status: ready
-
-Task: Add the voice endpoint.
-Files: stella/voice/...
-Contract: contracts/voice.md
-Checks: command and result
-Next: Review and commit.
-```
-
-## Start
-
-On the shared VM, clone once into an empty destination:
-
-```sh
-git clone git@github.com:inthree3/common.git /srv/project
-cd /srv/project
-mkdir -p stella lily alex contracts handoffs/messages tools
-```
-
-Use a writable parent directory and configure SSH access first. Each agent then connects to that same VM, enters `/srv/project`, and follows the rules above.
-
-Start with files and Git. Add automation when coordination actually needs it.
+[AGENTS.md](AGENTS.md) is copied unchanged from Stella's consolidated project. It records the final shared-checkout policy, responsibilities, product requirements, and verification rules. Its `/srv/project` paths refer to the original VM; they are not setup instructions for this documentation repository.
